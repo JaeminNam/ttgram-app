@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: EPERM: operation not permitted, unlink 'C:\DEV\risagram-app\node_modules\@react-native-community\cli-tools\node_modules\.bin'
+  Error: EPERM: operation not permitted, unlink 'C:\DEV\befriends-app\node_modules\@react-native-community\cli-tools\node_modules\.bin'
 
 npm manifest: 
   {

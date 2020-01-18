@@ -1,4 +1,4 @@
-# Risagram iOS & Android App
+# befriends iOS & Android App
 
 Screens:
 - [] home

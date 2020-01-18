@@ -1,5 +1,5 @@
 const options = {
-    uri:"http://localhost:4000/graphql"
+    uri:"http://192.168.10.100:4000/"
     
 }
 

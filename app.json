@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "risagram-app",
-    "slug": "risagram-app",
+    "name": "befriends-app",
+    "slug": "befriends-app",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
