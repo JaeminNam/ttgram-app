@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { ScrollView, RefreshControl } from "react-native";
+import { ScrollView, RefreshControl, AsyncStorage } from "react-native";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
 import Loader from "../components/Loader";
 import Post from "../components/Post";
 import { POST_FRAGMENT } from "../fragments";
+import styles from "../styles";
 
 const FEED_QUERY = gql`
   {
@@ -15,12 +16,10 @@ const FEED_QUERY = gql`
   }
   ${POST_FRAGMENT}
 `;
-
 export default () => {
   const [refreshing, setRefreshing] = useState(false);
   const { loading, data, refetch } = useQuery(FEED_QUERY);
   console.log(data);
-  return null;
   const refresh = async () => {
     try {
       setRefreshing(true);
@@ -32,7 +31,7 @@ export default () => {
     }
   };
   return (
-    <ScrollView
+    <ScrollView style={{backgroundColor:"#f5f5f5", color:styles.deptThemeColor}}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={refresh} />
       }

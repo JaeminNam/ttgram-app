@@ -12,10 +12,11 @@ import Swiper from "react-native-swiper";
 import NavIcon from "./NavIcon";
 
 const Container = styled.View `
-  margin-bottom: 40px;
+    margin-bottom:10px;
+    background-color:white;
 `;
 const Header = styled.View `
-  padding: 15px;
+  margin: 10px 15px 10px 15px;
   flex-direction: row;
   align-items: center;
 `;
@@ -32,19 +33,24 @@ const Location = styled.Text `
 const IconsContainer = styled.View `
   flex-direction: row;
   margin-bottom: 5px;
+  margin-left: 10px;
 `;
 const IconContainer = styled.View `
-  margin-right: 10px;
+  margin-right: 30px;
 `;
 const InfoContainer = styled.View `
   padding: 10px;
 `;
 const Contents = styled.Text `
-  margin: 5px 0px;
+  margin: 0px 10px 10px 15px;
 `;
 const CommentCount = styled.Text `
+color:#3a56a2;
   opacity: 0.5;
   font-size: 13px;
+`;
+const InText = styled.Text`
+font-size: 20px;
 `;
 
 export const TOGGLE_LIKE = gql `
@@ -54,7 +60,6 @@ export const TOGGLE_LIKE = gql `
 `;
 
 const Post = (postData) => {
-    // console.log(postData);
     const [isLiked, setIsLiked] = useState(postData.isLike);
     const [likeCount, setLikeCount] = useState(postData.likeCount);
     const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
@@ -99,6 +104,10 @@ const Post = (postData) => {
                     </HeaderUserContainer>
                 </Touchable>
             </Header>
+            <Contents>
+                {postData.contents}
+            </Contents>
+            
             <Swiper
                 showsPagination={true}
                 dotColor={"#ccc"}
@@ -111,7 +120,7 @@ const Post = (postData) => {
                     top: 50
                 }}
                 style={{
-                    height: constants.height / 2
+                    height: constants.height / 5
                 }}>
                 {
                     postData
@@ -120,7 +129,7 @@ const Post = (postData) => {
                             <Image
                                 style={{
                                     width: constants.width,
-                                    height: constants.height / 2
+                                    height: constants.height / 5
                                 }}
                                 key={file.id}
                                 source={{
@@ -133,41 +142,56 @@ const Post = (postData) => {
                 <IconsContainer>
                     <Touchable onPress={handleLike}>
                         <IconContainer>
-                            <NavIcon
-                                type={"MaterialCommunityIcons"}
-                                color={isLiked
-                                    ? styles.redColor
-                                    : styles.blackColor}
-                                size={30}
-                                name={isLiked
-                                    ? "heart"
-                                    : "heart-outline"}/>
+                            <InText style={{color:isLiked
+                                ? styles.themeColor
+                                : styles.darkGreyColor}}>
+                                <NavIcon
+                                    type={"AntDesign"}
+                                    size={20}
+                                    color={isLiked
+                                        ? styles.themeColor
+                                        : styles.darkGreyColor}
+                                    name={isLiked
+                                        ? "heart"
+                                        : "hearto"}/>
+                                &nbsp;{likeCount}
+                            </InText>
                         </IconContainer>
                     </Touchable>
                     <Touchable>
                         <IconContainer>
+                        <InText style={{color:styles.darkGreyColor}}>
                             <NavIcon
-                                type={"MaterialCommunityIcons"}
-                                color={styles.blackColor}
-                                size={30}
-                                name={"message-outline"}/>
+                                type={"AntDesign"}
+                                size={20}
+                                color={styles.darkGreyColor}
+                                name={"message1"}/>
+                                &nbsp;{postData.commentCount}
+                        </InText>
+                        </IconContainer>
+                    </Touchable>
+                    <Touchable>
+                        <IconContainer>
+                        <InText style={{color:styles.darkGreyColor}}>
+                            <NavIcon
+                                type={"FontAwesome"}
+                                size={20}
+                                color={styles.darkGreyColor}
+                                name={"picture-o"}/>
+                                &nbsp;{postData.files.length}
+                        </InText>
                         </IconContainer>
                     </Touchable>
                 </IconsContainer>
-                <Touchable>
-                    <Text>{likeCount}
-                        Likes</Text>
-                </Touchable>
-                <Contents>
-                    <Bold>{postData.user.nickName}&nbsp;</Bold>
-                    {postData.contents}
-                </Contents>
-                <Touchable>
-                    <CommentCount>
-                        See all {postData.comments.length}
-                        comments
-                    </CommentCount>
-                </Touchable>
+                {postData.commentCount >= 3 ? 
+                    <Touchable>
+                        <CommentCount>
+                            See all {postData.commentCount} comments
+                        </CommentCount>
+                    </Touchable>
+                 : 
+                 null}
+                
             </InfoContainer>
         </Container>
     )

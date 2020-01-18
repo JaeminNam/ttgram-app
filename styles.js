@@ -6,4 +6,6 @@ export default{
     ,redColor: "#ED4956"
     ,blueColor: "#3897f0"
     ,darkBlueColor: "#003569"
+    ,themeColor: "#4d84fe"
+    ,deptThemeColor: "#3a56a2"
 };

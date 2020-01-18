@@ -15,8 +15,13 @@ const stackFactory = (initialRoute, customConfig) => createStackNavigator({
         screen: initialRoute,
         navigationOptions: {
             headerStyle: {
-                elevation: 2, // remove shadow on Android
-                shadowOpacity: 2, // remove shadow on iOS
+                elevation: 0, // remove shadow on Android
+                shadowOpacity: 0, // remove shadow on iOS
+            },
+            headerTitleStyle:{
+                fontSize:30,
+                fontWeight:"bold",
+                color:styles.deptThemeColor                
             },
             ...customConfig
         }
@@ -31,29 +36,29 @@ const Tabs = createBottomTabNavigator({
                 <Image
                     style={{
                         width: 120,
-                        top: 5,
-                        left: -20
+                        top: 5
                     }}
                     resizeMode="contain"
                     source={require("../assets/logo.png")}/>
-            ),
-            headerLeft: (
-                <NavIcon
-                    type={"SimpleLineIcons"}
-                    name={"camera"}
-                    style={{
-                        paddingLeft: 10
-                    }}/>
             )
+            // ,
+            // headerLeft: (
+            //     <NavIcon
+            //         type={"SimpleLineIcons"}
+            //         name={"camera"}
+            //         style={{
+            //             paddingLeft: 10
+            //         }}/>
+            // )
         }),
         navigationOptions: {
-            tabBarIcon: ({focused}) => {return (!focused ? <NavIcon type={"MaterialCommunityIcons"} name={"home-outline"}/> : <NavIcon type={"MaterialCommunityIcons"} name={"home"} size={28} style={{top:0}}/>)}
+            tabBarIcon: ({focused}) => {return (!focused ? <NavIcon type={"AntDesign"} name={"home"}/> : <NavIcon type={"AntDesign"} name={"home"} style={{color:styles.themeColor}}/>)}
         }
     },
     SEARCH: {
         screen: stackFactory(Search, {title: "Search"}),
         navigationOptions: {
-            tabBarIcon: ({focused}) => {return (!focused ? <NavIcon type={"Ionicons"} name={"ios-search"} size={30}/> : <NavIcon type={"FontAwesome"} name={"search"} size={26} style={{top:-1}}/>)}
+            tabBarIcon: ({focused}) => {return (!focused ? <NavIcon type={"AntDesign"} name={"search1"}/> : <NavIcon type={"AntDesign"} name={"search1"} style={{color:styles.themeColor}}/>)}
         }
     },
     UPLOAD: {
@@ -62,24 +67,24 @@ const Tabs = createBottomTabNavigator({
             tabBarOnPress: ({navigation}) => {
                 navigation.navigate("PhotoNavigation")
             },
-            tabBarIcon: (<NavIcon type={"MaterialCommunityIcons"} name={"plus"} style={{borderRadius:8,borderWidth: 2,paddingLeft:4,paddingTop:3}} size={18}/>)
+            tabBarLabel: () => null,
+            tabBarIcon: (<NavIcon type={"AntDesign"} name={"pluscircle"} size={55} style={{top:-5, color:styles.themeColor}}/>)
         }
     },
     NOTIFICATIONS: {
         screen: stackFactory(Notifications, {title: "Notifications"}),
         navigationOptions: {
-            tabBarIcon: ({focused}) => {return (!focused ? <NavIcon type={"MaterialCommunityIcons"} name={"heart-outline"} /> : <NavIcon type={"MaterialCommunityIcons"} name={"heart"}/>)}
+            tabBarIcon: ({focused}) => {return (!focused ? <NavIcon type={"AntDesign"} name={"hearto"} /> : <NavIcon type={"AntDesign"} name={"hearto"} style={{color:styles.themeColor}}/>)}
         }
     },
     PROFILE: {
         screen: stackFactory(Profile, {title: "Profile"}),
         navigationOptions: {
-            tabBarIcon: ({focused}) => {return (!focused ? <NavIcon type={"Other"} name={"person-outline"}/> : <NavIcon type={"Other"} name={"person"}/>)}
+            tabBarIcon: ({focused}) => {return (!focused ? <NavIcon type={"AntDesign"} name={"user"} /> : <NavIcon type={"AntDesign"} name={"user"} style={{color:styles.themeColor}}/>)}
         }
     }
 }, {
     tabBarOptions: {
-        showLabel: false
     }
 });
 

@@ -15,6 +15,7 @@ export const POST_FRAGMENT = gql`
       url
     }
     likeCount
+    commentCount
     isLike
     comments {
       id

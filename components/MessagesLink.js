@@ -12,9 +12,10 @@ const Text = styled.Text ``;
 export default withNavigation(({navigation}) => (
     <Container onPress={() => navigation.navigate("MessageNavigation")}>
         <NavIcon
-            type={"SimpleLineIcons"}
-            name={"paper-plane"}
-            color={styles.blackColor}
+            type={"MaterialCommunityIcons"}
+            name={"comment-processing"}
+            color={styles.themeColor}
+            size={35}
             style={{paddingRight:10}}/>
     </Container>
 ));
