@@ -1,19 +1,24 @@
 import React, {useState} from "react";
-import {Image, Platform, Text} from "react-native";
+import {Image} from "react-native";
 import styled from "styled-components";
-import {Ionicons} from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import {gql} from "apollo-boost";
 import constants from "../constants";
 import styles from "../styles";
-import {useMutation} from "react-apollo-hooks";
+import {useMutation, useQuery} from "@apollo/react-hooks";
 import {withNavigation} from "react-navigation";
 import Swiper from "react-native-swiper";
 import NavIcon from "./NavIcon";
+import Moment from "moment";
+import SquarePhoto from "./SquarePhoto";
 
 const Container = styled.View `
     margin-bottom:10px;
     background-color:white;
+    /* border-top-width:0.5px;
+    border-top-color:${styles.lightThemeColor};
+    border-bottom-width:0.5px;
+    border-bottom-color:${styles.lightThemeColor}; */
 `;
 const Header = styled.View `
   margin: 10px 15px 10px 15px;
@@ -26,31 +31,61 @@ const HeaderUserContainer = styled.View `
 `;
 const Bold = styled.Text `
   font-weight: bold;
+  font-size: 17px;
 `;
 const Location = styled.Text `
-  font-size: 12px;
+  font-size: 13px;
 `;
 const IconsContainer = styled.View `
   flex-direction: row;
   margin-bottom: 5px;
-  margin-left: 10px;
+`;
+const CommentsContainer = styled.View `
+  flex-direction: column;
+  padding-bottom: 5px;
+`;
+const CommentBox = styled.View `
+flex-direction: row;
+margin-bottom:5px;
 `;
 const IconContainer = styled.View `
-  margin-right: 30px;
+  margin-right: 15px;
 `;
 const InfoContainer = styled.View `
-  padding: 10px;
+    margin: 0px 15px 0px 15px;
 `;
 const Contents = styled.Text `
   margin: 0px 10px 10px 15px;
 `;
+const UserLink = styled.Text `
+    font-weight:bold;
+`;
+const CommentText = styled.Text `
+`;
+const InText = styled.Text `
+font-size: 15px;
+`;
+const Line = styled.Text `
+  margin:2px 0px 3px 0px;
+  height:1px;
+  border-style: solid;
+  border-top-width: 0.5px;
+  border-color: ${styles.lightThemeColor};
+`;
 const CommentCount = styled.Text `
-color:#3a56a2;
-  opacity: 0.5;
+  color:${styles.lightThemeColor};
+  margin: 5px 15px 5px 15px;
   font-size: 13px;
 `;
-const InText = styled.Text`
-font-size: 20px;
+const CreateAt = styled.Text `
+  color:${styles.lightThemeColor};
+  margin: 0px 15px 5px 15px;
+  font-size: 13px;
+`;
+
+const SquareContainer = styled.View `
+    flex-direction: row;
+    flex-wrap: wrap;
 `;
 
 export const TOGGLE_LIKE = gql `
@@ -59,14 +94,29 @@ export const TOGGLE_LIKE = gql `
     }
 `;
 
-const Post = (postData) => {
-    const [isLiked, setIsLiked] = useState(postData.isLike);
-    const [likeCount, setLikeCount] = useState(postData.likeCount);
+const Post = ({
+    id,
+    user,
+    location,
+    files = [],
+    likeCount: likeCountProp,
+    contents,
+    comments = [],
+    isLike: isLikeProp,
+    createdAt,
+    commentCount,
+    navigation
+}) => {
+    const [isLiked, setIsLiked] = useState(isLikeProp);
+    const [likeCount, setLikeCount] = useState(likeCountProp);
     const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
         variables: {
-            postId: postData.id
+            postId: id
         }
     });
+    const dateFormat = (param) => {
+        return Moment(param).format("YYYY/MM/DD HH:mm:ss");
+    }
     const handleLike = async () => {
         if (isLiked) {
             setIsLiked(false);
@@ -84,114 +134,153 @@ const Post = (postData) => {
     return (
         <Container>
             <Header>
-                <Touchable>
+                <Touchable
+                    activeOpacity={1}
+                    onPress={() => navigation.navigate("UserDetail", {nickName: user.nickName})}>
                     <Image
                         style={{
-                            width: 30,
-                            height: 30,
-                            borderRadius: 15,
+                            width: 35,
+                            height: 35,
+                            borderRadius: 18,
                             borderWidth: 0.4,
-                            borderColor: '#ccc'
+                            borderColor: styles.lightThemeColor
                         }}
                         source={{
-                            uri: postData.user.avatar
+                            uri: user.avatar
                         }}></Image>
                 </Touchable>
-                <Touchable>
+                <Touchable
+                    activeOpacity={1}
+                    onPress={() => navigation.navigate("UserDetail", {nickName: user.nickName})}>
                     <HeaderUserContainer>
-                        <Bold>{postData.user.nickName}</Bold>
-                        <Location>{postData.location}</Location>
+                        <Bold
+                            style={{
+                                color: styles.fontThemeColor
+                            }}>{user.nickName}</Bold>
+                        {
+                            location === ""
+                                ? null
+                                : <Location>{location}</Location>
+                        }
                     </HeaderUserContainer>
                 </Touchable>
             </Header>
-            <Contents>
-                {postData.contents}
-            </Contents>
-            
-            <Swiper
-                showsPagination={true}
-                dotColor={"#ccc"}
-                dotStyle={{
-                    top: 50,
-                    width: 6,
-                    height: 6
-                }}
-                activeDotStyle={{
-                    top: 50
-                }}
+            <Contents
                 style={{
-                    height: constants.height / 5
+                    color: styles.fontThemeColor
                 }}>
+                {contents}
+            </Contents>
+            <SquareContainer>
                 {
-                    postData
-                        .files
-                        .map(file => (
-                            <Image
-                                style={{
-                                    width: constants.width,
-                                    height: constants.height / 5
-                                }}
-                                key={file.id}
-                                source={{
-                                    uri: file.url
-                                }}/>
-                        ))
+                    files.length > 0
+                        ? ( 
+                            files.map((file, idx) => (idx <= 2 ?<SquarePhoto key={idx} file={file} files={files} idx={idx}></SquarePhoto>:null))
+                        )
+                        : null
                 }
-            </Swiper>
+
+            </SquareContainer>
+            <CreateAt>{dateFormat(createdAt)}</CreateAt>
             <InfoContainer>
                 <IconsContainer>
                     <Touchable onPress={handleLike}>
                         <IconContainer>
-                            <InText style={{color:isLiked
-                                ? styles.themeColor
-                                : styles.darkGreyColor}}>
+                            <InText
+                                style={{
+                                    color: isLiked
+                                        ? styles.themeColor
+                                        : styles.darkGreyColor
+                                }}>
                                 <NavIcon
                                     type={"AntDesign"}
-                                    size={20}
+                                    size={18}
                                     color={isLiked
                                         ? styles.themeColor
                                         : styles.darkGreyColor}
                                     name={isLiked
-                                        ? "heart"
-                                        : "hearto"}/>
+                                        ? "like1"
+                                        : "like2"}/>
                                 &nbsp;{likeCount}
                             </InText>
                         </IconContainer>
                     </Touchable>
                     <Touchable>
                         <IconContainer>
-                        <InText style={{color:styles.darkGreyColor}}>
-                            <NavIcon
-                                type={"AntDesign"}
-                                size={20}
-                                color={styles.darkGreyColor}
-                                name={"message1"}/>
-                                &nbsp;{postData.commentCount}
-                        </InText>
+                            <InText
+                                style={{
+                                    color: styles.darkGreyColor
+                                }}>
+                                <NavIcon
+                                    type={"AntDesign"}
+                                    size={18}
+                                    color={styles.darkGreyColor}
+                                    name={"message1"}/>
+                                &nbsp;{commentCount}
+                            </InText>
                         </IconContainer>
                     </Touchable>
-                    <Touchable>
-                        <IconContainer>
-                        <InText style={{color:styles.darkGreyColor}}>
-                            <NavIcon
-                                type={"FontAwesome"}
-                                size={20}
-                                color={styles.darkGreyColor}
-                                name={"picture-o"}/>
-                                &nbsp;{postData.files.length}
-                        </InText>
-                        </IconContainer>
-                    </Touchable>
+                    {
+                        files.length > 0 ? (
+                            <Touchable onPress={() => navigation.navigate("PhotoView", {files})}>
+                                <IconContainer>
+                                    <InText
+                                        style={{
+                                            color: styles.darkGreyColor
+                                        }}>
+                                        <NavIcon
+                                            type={"FontAwesome"}
+                                            size={18}
+                                            color={styles.darkGreyColor}
+                                            name={"picture-o"}/>
+                                        &nbsp;{files.length}
+                                    </InText>
+                                </IconContainer>
+                            </Touchable>
+                        ):null
+                    }
                 </IconsContainer>
-                {postData.commentCount >= 3 ? 
-                    <Touchable>
-                        <CommentCount>
-                            See all {postData.commentCount} comments
-                        </CommentCount>
-                    </Touchable>
-                 : 
-                 null}
-                
+            </InfoContainer>
+            {
+                commentCount > 0
+                    ? <Line></Line>
+                    : null
+            }
+            {
+                commentCount >= 3
+                    ? <Touchable>
+                            <CommentCount>
+                                See all {commentCount}
+                                comments
+                            </CommentCount>
+                        </Touchable>
+                    : null
+            }
+            <InfoContainer>
+                <CommentsContainer>
+                    {
+                        comments
+                            .slice(0, 3)
+                            .map(comment => (
+                                <CommentBox key={comment.id}>
+                                    <Touchable
+                                    activeOpacity={1}
+                                    onPress={() => navigation.navigate("UserDetail", {nickName: user.nickName})}>
+                                        <UserLink
+                                            style={{
+                                                color: styles.fontThemeColor
+                                            }}>
+                                            {comment.user.nickName}&nbsp;:&nbsp;
+                                        </UserLink>
+                                    </Touchable>
+                                    <CommentText
+                                        style={{
+                                            color: styles.fontThemeColor
+                                        }}>{comment.text}</CommentText>
+                                </CommentBox>
+                            ))
+                    }
+                </CommentsContainer>
             </InfoContainer>
         </Container>
     )
@@ -214,7 +303,7 @@ Post.propTypes = {
     comments: PropTypes
         .arrayOf(PropTypes.shape({
             id: PropTypes.string.isRequired, text: PropTypes.string.isRequired,
-            // user: PropTypes.shape({   id: PropTypes.string.isRequired,   nickName:
+            // user: PropTypes.shape({     id: PropTypes.string.isRequired,     nickName:
             // PropTypes.string.isRequired }).isRequired
         }))
         .isRequired,
@@ -223,4 +312,4 @@ Post.propTypes = {
     createdAt: PropTypes.string
 };
 
-export default Post;
+export default withNavigation(Post);

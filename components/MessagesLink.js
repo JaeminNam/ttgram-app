@@ -7,15 +7,13 @@ import NavIcon from "./NavIcon";
 
 const Container = styled.TouchableOpacity ``;
 
-const Text = styled.Text ``;
-
 export default withNavigation(({navigation}) => (
-    <Container onPress={() => navigation.navigate("MessageNavigation")}>
+    <Container onPress={() => navigation.navigate("PostingNavigation")}>
         <NavIcon
-            type={"MaterialCommunityIcons"}
-            name={"comment-processing"}
-            color={styles.themeColor}
-            size={35}
-            style={{paddingRight:10}}/>
+            type={"AntDesign"}
+            name={"form"}
+            color={styles.deptThemeColor}
+            size={27}
+            style={{paddingRight:15}}/>
     </Container>
 ));

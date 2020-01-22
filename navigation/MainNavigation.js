@@ -1,17 +1,20 @@
 import {createAppContainer, NavigationActions, StackActions} from "react-navigation";
 import {createStackNavigator} from "react-navigation-stack";
-import { fromRight } from "react-navigation-transitions";
 import TabNavigation from "./TabNavigation";
 import PhotoNavigation from "./PhotoNavigation";
-import MessageNavigation from "./MessageNavigation";
+import PhotoViewNavigation from "./PhotoViewNavigation";
+import { fadeIn } from "react-navigation-transitions";
+import PostingNavigation from "./PostingNavigation";
+
 const MainNavigation = createStackNavigator({
     TabNavigation,
     PhotoNavigation,
-    MessageNavigation
+    PhotoViewNavigation,
+    PostingNavigation
 }, {
     headerMode: "none",
     mode: "modal",
-    transitionConfig: () => fromRight()
+    transitionConfig: () => fadeIn()
 });
 
 export default createAppContainer(MainNavigation);

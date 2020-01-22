@@ -3,7 +3,7 @@ import SelectPhoto from "../screens/Photo/SelectPhoto";
 import TakePhoto from "../screens/Photo/TakePhoto";
 import UploadPhoto from "../screens/Photo/UploadPhoto";
 import {createStackNavigator} from 'react-navigation-stack';
-import { fromRight } from "react-navigation-transitions";
+import { fadeIn } from "react-navigation-transitions";
 import styles from '../styles';
 
 const PhotoTabs = createMaterialTopTabNavigator({
@@ -32,7 +32,7 @@ const PhotoTabs = createMaterialTopTabNavigator({
             color: styles.blackColor,
             fontWeight: "bold"
         },
-        transitionConfig: () => fromRight()
+        transitionConfig: () => fadeIn()
     }
 });
 

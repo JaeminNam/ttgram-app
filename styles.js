@@ -1,11 +1,15 @@
 export default{
     blackColor: "#262626"
-    ,greyColor: "#F9F9F9"
-    ,darkGreyColor: "#999"
+    ,greyColor: "#d0d5dc"
+    ,darkGreyColor: "#93adc3"
     ,lightGreyColor: "#c7c7c7"
     ,redColor: "#ED4956"
     ,blueColor: "#3897f0"
     ,darkBlueColor: "#003569"
     ,themeColor: "#4d84fe"
     ,deptThemeColor: "#3a56a2"
+    ,lightThemeColor: "#c8d6e2"
+    ,fontThemeColor: "#2d365e"
+    ,bgThemeColor: "#edf2f7"
+    ,lightFontThemeColor: "#6888a2"
 };

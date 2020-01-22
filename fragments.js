@@ -19,8 +19,25 @@ export const POST_FRAGMENT = gql`
     isLike
     comments {
       id
+      user{
+        id
+        avatar
+        nickName
+      }
       text
     }
+    createdAt
+  }
+`;
+export const COMMENT_FRAGMENT = gql`
+  fragment CommentParts on Comment {
+    id
+    user{
+      id
+      avatar
+      nickName
+    }
+    text
     createdAt
   }
 `;
@@ -32,11 +49,10 @@ export const USER_FRAGMENT = gql`
     nickName
     fullName
     isFollowing
-    isSelf
-    bio
     followingCount
     followersCount
     postsCount
+    memo
     posts {
       ...PostParts
     }

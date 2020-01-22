@@ -15,5 +15,4 @@ export default createStackNavigator({
     },
     Message
 }, {
-    transitionConfig: () => fromRight()
 });

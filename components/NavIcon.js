@@ -7,6 +7,7 @@ import {
     FontAwesome,
     AntDesign,
     Feather,
+    Entypo,
     EvilIcons
 } from "@expo/vector-icons";
 import PropTypes from "prop-types";
@@ -17,7 +18,7 @@ const NavIcon = ({
     name,
     color = styles.lightGreyColor,
     style,
-    size = 26,
+    size =23,
     onPress
 }) => {
     switch (type) {
@@ -37,6 +38,8 @@ const NavIcon = ({
             return <SimpleLineIcons name={name} color={color} style={style} size={size} onPress={onPress}/>
         case "EvilIcons":
             return <EvilIcons name={name} color={color} style={style} size={size} onPress={onPress}/>
+        case "Entypo":
+            return <Entypo name={name} color={color} style={style} size={size} onPress={onPress}/>
         default:
             return null;
     }

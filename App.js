@@ -8,7 +8,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { persistCache } from 'apollo-cache-persist';
 import ApolloClient from "apollo-boost";
 import options from './apollo';
-import { ApolloProvider } from 'react-apollo-hooks';
+import { ApolloProvider } from '@apollo/react-hooks';
 import { ThemeProvider } from "styled-components";
 import styles from "./styles";
 import NavController from './components/NavController';
@@ -21,7 +21,7 @@ export default function App() {
   const preLoad = async () => {
     try{
       await Font.loadAsync({
-        ...Ionicons.font
+        ...Ionicons.font,
       });
       await Asset.loadAsync(require("./assets/logo.png"));
       const cache = new InMemoryCache();
