@@ -13,6 +13,12 @@ import { ThemeProvider } from "styled-components";
 import styles from "./styles";
 import NavController from './components/NavController';
 import { AuthProvider } from './AuthContext';
+import { YellowBox } from 'react-native';
+
+YellowBox.ignoreWarnings([
+    'Warning: componentWillMount has been renamed, and is not recommended for use. See https://fb.me/react-async-component-lifecycle-hooks for details.',
+    'Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://fb.me/react-async-component-lifecycle-hooks for details.',
+]);
 
 export default function App() {
   const [loaded, setLoaded ]=useState(false);
